@@ -1,0 +1,33 @@
+{
+h1 = new TH1D ("h1", "Gauss distribution; X; Y", 100, 1, 10);
+h2 = new TH1D ("h2", "Landau distribution; X; Y", 100, 1, 10);
+h3 = new TH1D ("h3", "Exponential distribution; X; Y", 100, 1, 10);
+
+for (int i =0; i<10000; i++) {
+double x = gRandom -> Gaus(5, 2);
+double y = gRandom -> Landau(5, 0.5);
+double z = gRandom -> Exp(4);
+
+h1 -> Fill(x);
+h2 -> Fill(y);
+h3 -> Fill(z);
+} 
+c1 = new TCanvas("c1", "different distributions", 1200, 1000);
+
+c1 -> Divide (3,1);
+
+c1 -> cd(1);
+h1 -> SetLineColor(14);
+h1 -> SetFillColor(14);
+h1 -> Draw();
+
+c1 -> cd(2);
+h2 -> SetLineColor(99);
+h2 -> SetFillColor(99);
+h2 -> Draw();
+
+c1 -> cd(3);
+h3 -> SetLineColor(54);
+h3 -> SetFillColor(54);
+h3 -> Draw();
+}
