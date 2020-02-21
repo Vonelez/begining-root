@@ -8,7 +8,7 @@
 
 using namespace std;
 
-void task_1_new() {
+void task_1() {
 TCanvas *c1 = new TCanvas ("c1", "Three hists", 1200, 1200);
 c1->SetGrid();
 c1 -> cd();
