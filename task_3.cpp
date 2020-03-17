@@ -6,13 +6,13 @@ void task_3() {
 	Double_t x = 0, y = 0;
 	Double_t y_det[5], y_fit[5];
 	TGraph *g = new TGraph();
-	TCanvas *c1 = new TCanvas ("c1", "detectors", 1200, 1200);
+	TCanvas *c1 = new TCanvas ("c1", "residuals", 1200, 1200);
 	c1 -> Divide(2, 3);
-	TH1F *h1 = new TH1F("h1", "First detector; detected Y; N", 1000, -0.1, 0.1);
-	TH1F *h2 = new TH1F("h2", "Second detector; detected Y; N", 1000, -0.1, 0.1);
-	TH1F *h3 = new TH1F("h3", "Third detector; detected Y; N", 1000, -0.1, 0.1);
-	TH1F *h4 = new TH1F("h4", "Fourth detector; detected Y; N", 1000, -0.1, 0.1);
-	TH1F *h5 = new TH1F("h5", "Fifth detector; detected Y; N", 1000, -0.1, 0.1);
+	TH1F *h1 = new TH1F("h1", "First detector; residuals; N", 1000, -0.1, 0.1);
+	TH1F *h2 = new TH1F("h2", "Second detector; residuals; N", 1000, -0.1, 0.1);
+	TH1F *h3 = new TH1F("h3", "Third detector; residuals; N", 1000, -0.1, 0.1);
+	TH1F *h4 = new TH1F("h4", "Fourth detector; residuals; N", 1000, -0.1, 0.1);
+	TH1F *h5 = new TH1F("h5", "Fifth detector; residuals; N", 1000, -0.1, 0.1);
 	t -> SetBranchAddress("Y_detector1", &y_det[0]);
 	t -> SetBranchAddress("Y_detector2", &y_det[1]);
 	t -> SetBranchAddress("Y_detector3", &y_det[2]);
@@ -26,15 +26,13 @@ void task_3() {
 		y = y_det[i];
 		g -> SetPoint(i, x, y);
 }
-	TF1 *appr = new TF1("appr", "[0]*x + [1]", -50, 50);
+	TF1 *appr = new TF1("appr", "[0]*x + [1]", 0, 180);
 	g -> Fit(appr);
-	cout << "\n" << " " << endl;
 	Double_t aParam = appr -> GetParameter(0);
 	Double_t bParam = appr -> GetParameter(1);
 	for (int i = 0; i < 5; ++i){
 		x = x_coord[i];
 		y_fit[i] = aParam*x + bParam;
-		cout << y_fit[i] - y_det[i] << endl;
 }
 	h1 -> Fill(y_fit[0] - y_det[0]);
 	h2 -> Fill(y_fit[1] - y_det[1]);
@@ -42,7 +40,7 @@ void task_3() {
 	h4 -> Fill(y_fit[3] - y_det[3]);
 	h5 -> Fill(y_fit[4] - y_det[4]);
 }
-	h1->SetMarkerStyle();
+	h1->SetMarkerStyle(8);
 	h1->SetLineColor(70);
 	h1->SetFillColor(70);
 	h2->SetLineColor(88);
@@ -73,5 +71,5 @@ void task_3() {
 	c1 -> cd();
 	c1->Update();
 	c1 -> Modified();
-	c1 -> Print("detectors.pdf");
+	c1 -> Print("residuals.pdf");
 }
