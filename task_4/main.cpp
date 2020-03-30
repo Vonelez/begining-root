@@ -1,18 +1,32 @@
-void task_3() {
-	TFile file("tree.root");
-	TTree *t;
-	file.GetObject("T", t);
+#include "TCanvas.h"
+#include "TH1.h"
+#include "TTree.h"
+#include "TFile.h"
+#include "TGraph.h"
+#include "functions.h"
+#include "TF1.h"
+
+int main() {
 	Double_t x_coord[5] = {100.0, 120.0, 140.0, 160.0, 180.0};
 	Double_t x = 0, y = 0;
 	Double_t y_det[5], y_fit[5];
+	TString dir("/home/sonya/");
+	TString fileName("tree");
+  	TString ending(".root");
+	TString RootName(dir + fileName + ending);
+	TFile *file = new TFile();
+  	file = TFile::Open(RootName, "read");
+	TTree *t = new TTree();
+	file -> GetObject("T", t);
 	TGraph *g = new TGraph();
 	TCanvas *c1 = new TCanvas ("c1", "residuals", 1200, 1200);
 	c1 -> Divide(2, 3);
-	TH1F *h1 = new TH1F("h1", "First detector; residuals; N", 1000, -0.1, 0.1);
-	TH1F *h2 = new TH1F("h2", "Second detector; residuals; N", 1000, -0.1, 0.1);
-	TH1F *h3 = new TH1F("h3", "Third detector; residuals; N", 1000, -0.1, 0.1);
-	TH1F *h4 = new TH1F("h4", "Fourth detector; residuals; N", 1000, -0.1, 0.1);
-	TH1F *h5 = new TH1F("h5", "Fifth detector; residuals; N", 1000, -0.1, 0.1);
+	TH1F *h1 = new TH1F("h1", "First detector; residuals, cm; N", 1000, -0.1, 0.1);
+	TH1F *h2 = new TH1F("h2", "Second detector; residuals, cm; N", 1000, -0.1, 0.1);
+	TH1F *h3 = new TH1F("h3", "Third detector; residuals, cm; N", 1000, -0.1, 0.1);
+	TH1F *h4 = new TH1F("h4", "Fourth detector; residuals, cm; N", 1000, -0.1, 0.1);
+	TH1F *h5 = new TH1F("h5", "Fifth detector; residuals, cm; N", 1000, -0.1, 0.1);	
+	TF1 *appr = new TF1("appr", "[0]*x + [1]", 0, 180);
 	t -> SetBranchAddress("Y_detector1", &y_det[0]);
 	t -> SetBranchAddress("Y_detector2", &y_det[1]);
 	t -> SetBranchAddress("Y_detector3", &y_det[2]);
@@ -26,7 +40,6 @@ void task_3() {
 		y = y_det[i];
 		g -> SetPoint(i, x, y);
 }
-	TF1 *appr = new TF1("appr", "[0]*x + [1]", 0, 180);
 	g -> Fit(appr);
 	Double_t aParam = appr -> GetParameter(0);
 	Double_t bParam = appr -> GetParameter(1);
@@ -71,5 +84,5 @@ void task_3() {
 	c1 -> cd();
 	c1->Update();
 	c1 -> Modified();
-	c1 -> Print("residuals.pdf");
+	c1 -> Print("residuals.pdf");	
 }
