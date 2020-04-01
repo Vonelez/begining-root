@@ -13,9 +13,8 @@ OTHER_FLAGS = -lm -lstdc++ -std=c++11 -lMinuit
 LDFLAGS = ${OTHER_FLAGS} $(shell root-config --glibs)
 
 EXEC = events
-SOURCE_DIR = src
 
-SRC = main.cpp generate_event.cpp
+SRC = main.cpp
 
 BUILD_DIR = Build
 
