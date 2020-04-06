@@ -6,7 +6,7 @@ EXEC_TYPE = ${DEBUG}
 
 CXXFLAGS = -Wall ${EXEC_TYPE} $(shell root-config --cflags)
 
-PATH_ITS = -I./includes/
+PATH_ITS = -I./includes
 INCPATH = ${PATH_ITS}
 
 OTHER_FLAGS = -lm -lstdc++ -std=c++11 -lMinuit
@@ -14,9 +14,10 @@ LDFLAGS = ${OTHER_FLAGS} $(shell root-config --glibs)
 
 EXEC = events
 
-SRC = main.cpp
+SOURCE_DIR = codes
+SRC = main.cpp $(SOURCE_DIR)/generate_event.cpp $(SOURCE_DIR)/read_data.cpp
 
-BUILD_DIR = Build
+BUILD_DIR = build
 
 OBJ = $(patsubst %.cpp,$(BUILD_DIR)/%.o,$(SRC))
 
@@ -31,4 +32,4 @@ $(BUILD_DIR)/%.o : %.cpp
 	$(CXX) $(CXXFLAGS) $(INCPATH) -c $<  -o $@
 
 clean:
-	rm -rf $(BUILD_DIR)
+	rm -rf $(BUILD_DIR) 
