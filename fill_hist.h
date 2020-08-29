@@ -1,5 +1,6 @@
 #include "TROOT.h"
 #include "TH1F.h"
+#include "TF1.h"
 #include "TTree.h"
 #include "TCanvas.h"
 #include "TString.h"
@@ -10,8 +11,7 @@ class Filling_Hist{
 public:
 	Filling_Hist(TTree *st);
 	virtual ~Filling_Hist();
-	virtual TH1F *get_hist();
-	void solution();
+	TH1F *solution();
 private:
 	TTree *st;
 	TH1F *full;

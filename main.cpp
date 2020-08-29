@@ -1,6 +1,5 @@
-#include "fill_hist.h"
 #include "fit_func.h"
-
+#include "fill_hist.h"
 int main(){
 	TString dir("/home/sonya/");
 	TString fileName("Synchronized_data_run_222-");
@@ -12,7 +11,10 @@ int main(){
 	TTree *t = new TTree();
 	analysis->GetObject("ADC1", t);
 
-	Filling_Hist *fill_my_hist = new Filling_Hist(t);
-	Fit_Func *do_fit = new Fit_Func(fill_my_hist -> Filling_Hist::get_hist());
-	/*do_fit -> Fit_Func::fitting(fill_my_hist -> Filling_Hist::get_hist());*/
+	Filling_Hist *data_to_fit = new Filling_Hist(t);
+	TH1F *data = new TH1F("data", "", 100, -100., 1000.);
+	data = data_to_fit -> solution();
+
+	Fit_Func *my_fit = new Fit_Func(data);
+	my_fit -> Fit_Func::do_fit(data);
 }
